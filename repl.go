@@ -19,13 +19,39 @@ func startRepl() {
 		if len(cleaned) == 0 {
 			continue
 		}
-		command := cleaned[0]
-		switch command {
-			case "exit":
-				os.Exit(0)
+		commandName := cleaned[0]
+
+		availableCommands := getCommands()
+		command, ok := availableCommands[commandName]
+
+		// invalid command
+		if !ok {
+			fmt.Println("Invalid command")
+			continue
 		}
 
-		fmt.Println("echoing: ", cleaned)
+		command.callback()
+	}
+}
+
+type cliCommand struct {
+	name string
+	description string
+	callback func() error
+}
+
+func getCommands() map[string]cliCommand {
+	return map[string]cliCommand {
+		"help": {
+			name: "help",
+			description: "Prints the help menu",
+			callback: callbackHelp,
+		},
+		"exit": {
+			name: "exit",
+			description: "Turns off the Pokedex",
+			callback: callbackExit,
+		},
 	}
 }
 

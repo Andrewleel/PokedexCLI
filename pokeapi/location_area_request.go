@@ -29,6 +29,7 @@ func (c *Client) ListLocationAreas() (LocationAreasResp, error) {
 		return LocationAreasResp{}, err
 	}
 
+	// Unmarshals "data" into valid struct which is locationAreasResp
 	locationAreasResp := LocationAreasResp{}
 	err = json.Unmarshal(data, &locationAreasResp)
 	if err != nil {
